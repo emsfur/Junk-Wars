@@ -2,25 +2,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.InputSystem;
 
 public class NetworkPlayerMovement : NetworkBehaviour
 {
-
 	private void Update() {
         if (!IsOwner) return;    
 
-        Vector3 moveDir = new Vector3(0, 0, 0);
+        Vector3 moveDir = Vector3.zero;
 
-        if (Input.GetKey(KeyCode.W)) moveDir.z = +1f;
-        if (Input.GetKey(KeyCode.S)) moveDir.z = -1f;
-        if (Input.GetKey(KeyCode.A)) moveDir.x = -1f;
-        if (Input.GetKey(KeyCode.D)) moveDir.x = +1f;
+        if (Input.GetKey(KeyCode.W)) moveDir += transform.forward;
+        if (Input.GetKey(KeyCode.S)) moveDir -= transform.forward;
+        if (Input.GetKey(KeyCode.A)) moveDir -= transform.right;
+        if (Input.GetKey(KeyCode.D)) moveDir += transform.right;
 
-        movePlayerServerRpc(moveDir);
+        MovePlayerServerRpc(moveDir);
+
+        RotatePlayerServerRpc(Camera.main.transform.eulerAngles.y);
+        
+
 	}
 
     [ServerRpc]
-    void movePlayerServerRpc(Vector3 moveDir) {
+    void MovePlayerServerRpc(Vector3 moveDir) {
         transform.position += moveDir * 3f * Time.deltaTime;
     }
+
+    [ServerRpc]
+    void RotatePlayerServerRpc(float val) {
+        transform.rotation = Quaternion.Euler(0f, val, 0f);
+    }
+
 }
