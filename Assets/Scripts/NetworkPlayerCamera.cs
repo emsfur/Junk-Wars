@@ -13,7 +13,13 @@ public class NetworkPlayerCamera : NetworkBehaviour
     {
         if (IsOwner) {
             SetupVirtualCam();
+            
+            // disables cursor
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
         }
+
+
     }
 
     // ties player to virtual cam (cinemachine)
@@ -23,6 +29,5 @@ public class NetworkPlayerCamera : NetworkBehaviour
 
         virtualCam = FindObjectOfType<CinemachineVirtualCamera>();
         virtualCam.Follow = transform;
-        //virtualCam.
     }
 }
