@@ -30,6 +30,7 @@ public class InputManager : MonoBehaviour
     {
         playerControls.Disable();
     } 
+    
     public Vector2 GetPlayerMovement() {
         return playerControls.Player.Move.ReadValue<Vector2>();
 
