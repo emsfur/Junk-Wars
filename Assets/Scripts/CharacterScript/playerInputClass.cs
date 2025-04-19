@@ -77,6 +77,9 @@ public class playerInputClass : MonoBehaviour
        move=cameraTransform.forward * move.z + cameraTransform.right * move.x;
        move.y = 0f;
        controller.Move(move*Time.deltaTime*moveSpeed);
+        if(move != Vector3.zero) {
+            gameObject.transform.forward = move; 
+        }
 
         // if(move != Vector3.zero) {
         //     //controller.Move(move);
