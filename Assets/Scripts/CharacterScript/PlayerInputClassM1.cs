@@ -104,9 +104,9 @@ public class PlayerInputClassM1 : NetworkBehaviour
             //jumpAudioSource.Play();
             playerVelocity.y += Mathf.Sqrt(jumpHeight*-2.0f*gravityValue);
        }
-          if(move != Vector3.zero) {
-            gameObject.transform.forward = move; 
-        }
+        //   if(move != Vector3.zero) {
+        //     gameObject.transform.forward = move; 
+        //     }
         playerVelocity.y += gravityValue* Time.deltaTime;//*moveSpeed;
         controller.Move(playerVelocity * Time.deltaTime);
        // walkAudioSource.clip = walkAudio;

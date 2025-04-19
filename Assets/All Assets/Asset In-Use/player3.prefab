@@ -143,6 +143,7 @@ GameObject:
   - component: {fileID: 6723856401740883123}
   - component: {fileID: 3647089656324546989}
   - component: {fileID: 4751035383103848721}
+  - component: {fileID: -5098104306554867312}
   m_Layer: 0
   m_Name: player3
   m_TagString: Untagged
@@ -287,6 +288,19 @@ MonoBehaviour:
   ScaleThreshold: 0.01
   InLocalSpace: 0
   Interpolate: 1
+--- !u!114 &-5098104306554867312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6723856401740883117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56b3b78b8aacb1245b2ea45d49bc7f07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  turningSpeed: 80
 --- !u!1 &6723856402291220488
 GameObject:
   m_ObjectHideFlags: 0
