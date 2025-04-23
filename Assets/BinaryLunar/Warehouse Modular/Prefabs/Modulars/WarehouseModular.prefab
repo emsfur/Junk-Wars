@@ -1,0 +1,138 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3052295033192093504
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3052295033192093519}
+  - component: {fileID: 1147531835}
+  - component: {fileID: 1147531836}
+  - component: {fileID: 8603819667090707999}
+  - component: {fileID: 1879994655791115265}
+  m_Layer: 0
+  m_Name: WarehouseModular
+  m_TagString: AvoidMerge
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3052295033192093519
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3052295033192093504}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.34, y: 0, z: 2.01}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &1147531835
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3052295033192093504}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 4fbef3885e8a32b45b731da4b6ee51c5, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &1147531836
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3052295033192093504}
+  m_Mesh: {fileID: 0}
+--- !u!114 &8603819667090707999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3052295033192093504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24fb3eb29eeebd04d87475bbfb984a31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  createMultiMaterialMesh: 1
+  combineInactiveChildren: 0
+  deactivateCombinedChildren: 0
+  deactivateCombinedChildrenMeshRenderers: 0
+  generateUVMap: 0
+  destroyCombinedChildren: 1
+  folderPath: Prefabs/CombinedMeshes
+  meshFiltersToSkip: []
+--- !u!114 &1879994655791115265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3052295033192093504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c78b2155ca673d468a3036da49e02ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemsList: []
+  largeWall: {fileID: 6216761253308103380, guid: df827cd077961ca44965d2c75b6dfeb5,
+    type: 3}
+  mediumWall: {fileID: 8185047446493160509, guid: 0a9c4b07796161747b87f64d0db5cdc3,
+    type: 3}
+  smallWall: {fileID: 3392249578505732557, guid: 731efc75ab1e98b42895afda8096b000,
+    type: 3}
+  miniWall: {fileID: 8430226117053624975, guid: 87207116139f9f24aaab6e65f17d9ff0,
+    type: 3}
+  tinyWall: {fileID: 817798651731717252, guid: 3f857260c47f18847bfd35e8d08a668b, type: 3}
+  windowWall: {fileID: 3378595610355342876, guid: 76be505c849ac1449be262b8440d1dbd,
+    type: 3}
+  smallWindowWall: {fileID: 6932049644771925251, guid: 898aaaccce874ec44882396632d6eac6,
+    type: 3}
+  innerCorner: {fileID: 9134270287490075817, guid: c6d37d507c9e71846bb9545dd50139dd,
+    type: 3}
+  outerCorner: {fileID: 2927798701437732120, guid: 20df4cd655ae2b94a84ef5495e5ccc69,
+    type: 3}
+  garageFrame: {fileID: 2217224938595418750, guid: bd3fbfe419f7de84b86a78c4906c5c7c,
+    type: 3}
+  doorFrame: {fileID: 25154570292865348, guid: 1674640a4f3fb654b8d9157c5ed10d98, type: 3}
+  doubleDoorFrame: {fileID: 450454326846370357, guid: 2294b8497409bf349b4871cdccc6d237,
+    type: 3}
