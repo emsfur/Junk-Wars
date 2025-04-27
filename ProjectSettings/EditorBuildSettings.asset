@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/GamePhase.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
-    path: Assets/Scenes/TestAlex.unity
+    path: Assets/Scenes/Player Movement and Client.unity
     guid: 0a1e73150d1e83242bbc4f62bee6214d
   - enabled: 0
     path: Assets/Scenes/testingAlexAgain.unity
