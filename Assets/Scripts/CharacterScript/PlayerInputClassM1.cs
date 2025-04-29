@@ -43,7 +43,8 @@ public class PlayerInputClassM1 : NetworkBehaviour
     
 //   private static InputManager _instance;
 
-   
+    //handing player interaction
+    Ray ray;
     
     private void Start()
     {
@@ -62,7 +63,12 @@ public class PlayerInputClassM1 : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         if(IsOwner) {
+            // begin first person cam
             vc.Priority =1;
+
+            // disable cursor when game begins
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
         else {
             vc.Priority =0;
@@ -115,6 +121,14 @@ public class PlayerInputClassM1 : NetworkBehaviour
         Debug.Log("Speed is" + moveSpeed);
        // Debug.Log(controller.pos);
        Debug.Log("From playerInputController" + thisScore);
+
+        // handling player interaction
+        if (inputManager.PlayerInteracted()) {
+            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit)) {
+                Debug.Log(hit.collider.gameObject.name + " was hit.");
+            }
+        }
     }
     }    
 }
