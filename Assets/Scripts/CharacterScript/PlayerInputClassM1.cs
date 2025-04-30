@@ -92,7 +92,7 @@ public class PlayerInputClassM1 : NetworkBehaviour
        //Vector2 moveInput = playerControls.Touch.Moving.ReadValue<Vector2>();
        //Vector2 moveInput = playerControls.Player.Move.ReadValue<Vector2>();
         Vector2 moveInput = inputManager.GetPlayerMovement();
-       Debug.Log(this.transform.position);
+       //Debug.Log(this.transform.position);
        Vector3 move = new Vector3(moveInput.x,0f,moveInput.y);
        move=cameraTransform.forward * move.z + cameraTransform.right * move.x;
        move.y = 0f;
