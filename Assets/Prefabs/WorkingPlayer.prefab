@@ -144,8 +144,9 @@ GameObject:
   - component: {fileID: 3647089656324546989}
   - component: {fileID: 4751035383103848721}
   - component: {fileID: -5098104306554867312}
+  - component: {fileID: 3141911988030454487}
   m_Layer: 0
-  m_Name: player3
+  m_Name: WorkingPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -301,6 +302,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turningSpeed: 80
+--- !u!114 &3141911988030454487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6723856401740883117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6964bc97aea2a4a4b89767cb607ac534, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerSpawnPoints: {fileID: 2215236759160314529, guid: 9dcc6098e913e00458c1e5aff6b510f1, type: 3}
 --- !u!1 &6723856402291220488
 GameObject:
   m_ObjectHideFlags: 0
