@@ -44,7 +44,8 @@ public class PlayerInputClassM1 : NetworkBehaviour
 //   private static InputManager _instance;
 
     //handing player interaction
-    Ray ray;
+    private Ray ray;
+    private GameObject inHand;
     
     private void Start()
     {
@@ -124,10 +125,30 @@ public class PlayerInputClassM1 : NetworkBehaviour
 
         // handling player interaction
         if (inputManager.PlayerInteracted()) {
-            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit)) {
-                Debug.Log(hit.collider.gameObject.name + " was hit.");
+            
+
+            // if player has object in hand, drop it where it is
+            if (inHand != null) {
+                inHand.transform.SetParent(null);
+                inHand = null;
             }
+            else {
+                // process what user is interacting with (scrap/door/others)
+                ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                if (Physics.Raycast(ray, out RaycastHit hit, 3)) {
+                    GameObject obj = hit.collider.gameObject;
+
+                    // if player lookcing at scrap and doesn't have item in hand
+                    if (obj.tag == "Scrap" && inHand == null) {
+                        // what aspects of this should be handled by server?
+                        inHand = obj;
+                        obj.transform.SetParent(transform);
+                        // obj.transform.localPosition = Vector3.zero; 
+                    }   
+                }
+            }
+
         }
     }
     }    

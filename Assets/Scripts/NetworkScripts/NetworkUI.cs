@@ -31,10 +31,12 @@ public class NetworkUI : NetworkBehaviour
       //  playerInputOther = playerInput.GetComponent<playerInputClass>();
         hostButton.onClick.AddListener(() => {
             NetworkManager.Singleton.StartHost();
+            gameObject.SetActive(false); // hides buttons once pressed
         });
         clientButton.onClick.AddListener(() =>
         {
             NetworkManager.Singleton.StartClient();
+            gameObject.SetActive(false); // hides buttons once pressed
         });
     }
     private void Update()
