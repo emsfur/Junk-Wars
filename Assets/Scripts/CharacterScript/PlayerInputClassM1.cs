@@ -46,6 +46,7 @@ public class PlayerInputClassM1 : NetworkBehaviour
     //handing player interaction
     private Ray ray;
     private GameObject inHand;
+    [SerializeField] private Transform anchor;
     
     private void Start()
     {
@@ -70,6 +71,9 @@ public class PlayerInputClassM1 : NetworkBehaviour
             // disable cursor when game begins
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+
+            // grabs item anchor (located as a child of main camera)
+            anchor = Camera.main.transform.Find("ItemAnchor");
         }
         else {
             vc.Priority =0;
@@ -123,13 +127,19 @@ public class PlayerInputClassM1 : NetworkBehaviour
        // Debug.Log(controller.pos);
        Debug.Log("From playerInputController" + thisScore);
 
+
+
+
+
         // handling player interaction
         if (inputManager.PlayerInteracted()) {
-            
-
             // if player has object in hand, drop it where it is
             if (inHand != null) {
                 inHand.transform.SetParent(null);
+                inHand.GetComponent<Rigidbody>().useGravity = true;  
+
+                SpringJoint joint = inHand.GetComponent<SpringJoint>();
+                Destroy(joint);
                 inHand = null;
             }
             else {
@@ -143,9 +153,30 @@ public class PlayerInputClassM1 : NetworkBehaviour
                     if (obj.tag == "Scrap" && inHand == null) {
                         // what aspects of this should be handled by server?
                         inHand = obj;
-                        obj.transform.SetParent(transform);
+                        Rigidbody itemRb = inHand.GetComponent<Rigidbody>();
+                        itemRb.useGravity = false;
+                        itemRb.velocity = Vector3.zero;
+                        anchor.transform.position = hit.transform.position;
+                        // inHand.transform.SetParent(anchor);
                         // obj.transform.localPosition = Vector3.zero; 
-                    }   
+
+                        Rigidbody anchorRb = anchor.GetComponent<Rigidbody>();
+                        itemRb.angularVelocity = Vector3.zero;
+
+                        SpringJoint joint = inHand.AddComponent<SpringJoint>();
+                        joint.connectedBody = anchorRb;
+
+                        joint.spring = 100f; // pull force towards anchor
+                        joint.damper = 50f; // wobble modifier
+
+                        // spring stretch limits
+                        joint.minDistance = 0.01f;
+                        joint.maxDistance = 0.05f;
+
+                    } 
+                    // else if (obj.tag == "Scrap")  {
+                        
+                    // }
                 }
             }
 
