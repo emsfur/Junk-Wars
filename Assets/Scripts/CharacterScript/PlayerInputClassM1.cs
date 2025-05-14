@@ -46,7 +46,9 @@ public class PlayerInputClassM1 : NetworkBehaviour
     //handing player interaction
     private Ray ray;
     private GameObject inHand;
-    private Transform anchor;
+    private Transform anchor; // client side
+    [SerializeField] private Transform anchorProxyObject; // server side sync
+    private Rigidbody anchorProxyRb;
     
     private void Start()
     {
@@ -64,6 +66,7 @@ public class PlayerInputClassM1 : NetworkBehaviour
     }
     public override void OnNetworkSpawn()
     {
+        anchorProxyRb = anchorProxyObject.GetComponent<Rigidbody>();
         if(IsOwner) {
             // begin first person cam
             vc.Priority =1;
@@ -74,6 +77,9 @@ public class PlayerInputClassM1 : NetworkBehaviour
 
             // grabs item anchor (located as a child of main camera)
             anchor = Camera.main.transform.Find("ItemAnchor");
+
+
+            // anchorProxyRb = anchorProxyObject.GetComponent<Rigidbody>();
         }
         else {
             vc.Priority =0;
@@ -127,7 +133,7 @@ public class PlayerInputClassM1 : NetworkBehaviour
             // Debug.Log(controller.pos);
             Debug.Log("From playerInputController" + thisScore);
 
-
+            UpdateAnchorProxyServerRpc(anchor.position);
             PlayerScrapInteractions();
         }
     }
@@ -155,6 +161,8 @@ public class PlayerInputClassM1 : NetworkBehaviour
                         // marks item inhand on client side
                         inHand = obj;
 
+                        Debug.Log("ems: picking up scrap");
+
                         // stores network reference to let server handle the rest
                         inHand.TryGetComponent<NetworkObject>(out var netObj);
 
@@ -166,6 +174,13 @@ public class PlayerInputClassM1 : NetworkBehaviour
             }
         }
     }
+
+    [ServerRpc]
+    private void UpdateAnchorProxyServerRpc(Vector3 anchorPosition)
+    {
+        anchorProxyObject.position = anchorPosition;
+    }
+
 
     [ServerRpc]
     private void DropObjectServerRpc(NetworkObjectReference objRef)
@@ -189,7 +204,7 @@ public class PlayerInputClassM1 : NetworkBehaviour
             itemRb.velocity = Vector3.zero;
             anchor.transform.position = hitPos;
 
-            Rigidbody anchorRb = anchor.GetComponent<Rigidbody>();
+            Rigidbody anchorRb = anchorProxyRb; 
             itemRb.angularVelocity = Vector3.zero;
 
             SpringJoint joint = obj.gameObject.AddComponent<SpringJoint>();

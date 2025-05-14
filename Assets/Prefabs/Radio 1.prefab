@@ -16,9 +16,10 @@ GameObject:
   - component: {fileID: 6905790636413800430}
   - component: {fileID: 565208499862990949}
   - component: {fileID: 4591798512235128525}
+  - component: {fileID: -1777821583158910398}
   m_Layer: 0
   m_Name: Radio 1
-  m_TagString: Untagged
+  m_TagString: Scrap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -169,3 +170,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.2551188, y: 0.18092112, z: 0.07590066}
   m_Center: {x: -0.001319088, y: 0.09046055, z: -0.0000018533319}
+--- !u!114 &-1777821583158910398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7781298888412436047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 951099334
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
