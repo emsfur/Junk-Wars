@@ -46,7 +46,7 @@ public class PlayerInputClassM1 : NetworkBehaviour
     //handing player interaction
     private Ray ray;
     private GameObject inHand;
-    [SerializeField] private Transform anchor;
+    private Transform anchor;
     
     private void Start()
     {
@@ -83,63 +83,64 @@ public class PlayerInputClassM1 : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-     if(!IsOwner) {
-        return;
-     }
-     else if(IsOwner) {
-        cameraTransform = Camera.main.transform;
-        groundPlayer = controller.isGrounded;
-
-        if(groundPlayer && playerVelocity.y < 0) {
-            playerVelocity.y = 0f;
+        if(!IsOwner) {
+            return;
         }
-       
-       //Vector2 moveInput = playerControls.Touch.Moving.ReadValue<Vector2>();
-       //Vector2 moveInput = playerControls.Player.Move.ReadValue<Vector2>();
-        Vector2 moveInput = inputManager.GetPlayerMovement();
-       //Debug.Log(this.transform.position);
-       Vector3 move = new Vector3(moveInput.x,0f,moveInput.y);
-       move=cameraTransform.forward * move.z + cameraTransform.right * move.x;
-       move.y = 0f;
-       controller.Move(move*Time.deltaTime*moveSpeed);
+        else if(IsOwner) {
+            cameraTransform = Camera.main.transform;
+            groundPlayer = controller.isGrounded;
 
-        // if(move != Vector3.zero) {
-        //     //controller.Move(move);
-        //     gameObject.transform.forward=move;
-        // }
-       
-       //if (playerControls.Player.Jump.triggered && groundPlayer) {
-        if(inputManager.PlayerJumpedThisFrame() && groundPlayer){
-           // AudioSource.PlayClipAtPoint(jumpAudio,transform.position, 1f);
-           //jumpAudioSource.clip = jumpAudio;
-            //jumpAudioSource.Play();
-            playerVelocity.y += Mathf.Sqrt(jumpHeight*-2.0f*gravityValue);
-       }
-        //   if(move != Vector3.zero) {
-        //     gameObject.transform.forward = move; 
-        //     }
-        playerVelocity.y += gravityValue* Time.deltaTime;//*moveSpeed;
-        controller.Move(playerVelocity * Time.deltaTime);
-       // walkAudioSource.clip = walkAudio;
-       // walkAudioSource.Play();
-        //AudioSource.PlayClipAtPoint(walkAudio, transform.position,1f);
-        Debug.Log("Speed is" + moveSpeed);
-       // Debug.Log(controller.pos);
-       Debug.Log("From playerInputController" + thisScore);
+            if(groundPlayer && playerVelocity.y < 0) {
+                playerVelocity.y = 0f;
+            }
+        
+            //Vector2 moveInput = playerControls.Touch.Moving.ReadValue<Vector2>();
+            //Vector2 moveInput = playerControls.Player.Move.ReadValue<Vector2>();
+            Vector2 moveInput = inputManager.GetPlayerMovement();
+            //Debug.Log(this.transform.position);
+            Vector3 move = new Vector3(moveInput.x,0f,moveInput.y);
+            move=cameraTransform.forward * move.z + cameraTransform.right * move.x;
+            move.y = 0f;
+            controller.Move(move*Time.deltaTime*moveSpeed);
+
+                // if(move != Vector3.zero) {
+                //     //controller.Move(move);
+                //     gameObject.transform.forward=move;
+                // }
+            
+            //if (playerControls.Player.Jump.triggered && groundPlayer) {
+                if(inputManager.PlayerJumpedThisFrame() && groundPlayer){
+                // AudioSource.PlayClipAtPoint(jumpAudio,transform.position, 1f);
+                //jumpAudioSource.clip = jumpAudio;
+                    //jumpAudioSource.Play();
+                    playerVelocity.y += Mathf.Sqrt(jumpHeight*-2.0f*gravityValue);
+            }
+                //   if(move != Vector3.zero) {
+                //     gameObject.transform.forward = move; 
+                //     }
+                playerVelocity.y += gravityValue* Time.deltaTime;//*moveSpeed;
+                controller.Move(playerVelocity * Time.deltaTime);
+            // walkAudioSource.clip = walkAudio;
+            // walkAudioSource.Play();
+                //AudioSource.PlayClipAtPoint(walkAudio, transform.position,1f);
+                Debug.Log("Speed is" + moveSpeed);
+            // Debug.Log(controller.pos);
+            Debug.Log("From playerInputController" + thisScore);
 
 
+            PlayerScrapInteractions();
+        }
+    }
 
 
-
-        // handling player interaction
+    void PlayerScrapInteractions() {
         if (inputManager.PlayerInteracted()) {
             // if player has object in hand, drop it where it is
             if (inHand != null) {
-                inHand.transform.SetParent(null);
-                inHand.GetComponent<Rigidbody>().useGravity = true;  
 
-                SpringJoint joint = inHand.GetComponent<SpringJoint>();
-                Destroy(joint);
+                inHand.TryGetComponent<NetworkObject>(out var netObj);
+                DropObjectServerRpc(netObj);
+
                 inHand = null;
             }
             else {
@@ -151,36 +152,58 @@ public class PlayerInputClassM1 : NetworkBehaviour
 
                     // if player lookcing at scrap and doesn't have item in hand
                     if (obj.tag == "Scrap" && inHand == null) {
-                        // what aspects of this should be handled by server?
+                        // marks item inhand on client side
                         inHand = obj;
-                        Rigidbody itemRb = inHand.GetComponent<Rigidbody>();
-                        itemRb.useGravity = false;
-                        itemRb.velocity = Vector3.zero;
-                        anchor.transform.position = hit.transform.position;
-                        // inHand.transform.SetParent(anchor);
-                        // obj.transform.localPosition = Vector3.zero; 
 
-                        Rigidbody anchorRb = anchor.GetComponent<Rigidbody>();
-                        itemRb.angularVelocity = Vector3.zero;
+                        // stores network reference to let server handle the rest
+                        inHand.TryGetComponent<NetworkObject>(out var netObj);
 
-                        SpringJoint joint = inHand.AddComponent<SpringJoint>();
-                        joint.connectedBody = anchorRb;
+                        InteractWithObjectServerRpc(netObj, hit.transform.position);
 
-                        joint.spring = 100f; // pull force towards anchor
-                        joint.damper = 50f; // wobble modifier
 
-                        // spring stretch limits
-                        joint.minDistance = 0.01f;
-                        joint.maxDistance = 0.05f;
-
-                    } 
-                    // else if (obj.tag == "Scrap")  {
-                        
-                    // }
+                    }
                 }
             }
-
         }
     }
-    }    
+
+    [ServerRpc]
+    private void DropObjectServerRpc(NetworkObjectReference objRef)
+    {
+        if (objRef.TryGet(out var obj))
+        {
+            SpringJoint joint = obj.GetComponent<SpringJoint>();
+            Rigidbody rb = obj.GetComponent<Rigidbody>();
+
+            rb.useGravity = true;
+            Destroy(joint);
+        }
+    }
+
+    [ServerRpc]
+    private void InteractWithObjectServerRpc(NetworkObjectReference objRef, Vector3 hitPos) {
+        if (objRef.TryGet(out var obj))
+        {
+            Rigidbody itemRb = obj.GetComponent<Rigidbody>();
+            itemRb.useGravity = false;
+            itemRb.velocity = Vector3.zero;
+            anchor.transform.position = hitPos;
+
+            Rigidbody anchorRb = anchor.GetComponent<Rigidbody>();
+            itemRb.angularVelocity = Vector3.zero;
+
+            SpringJoint joint = obj.gameObject.AddComponent<SpringJoint>();
+            joint.connectedBody = anchorRb;
+
+            joint.spring = 100f; // pull force towards anchor
+            joint.damper = 50f; // wobble modifier
+
+            // spring stretch limits
+            joint.minDistance = 0.01f;
+            joint.maxDistance = 0.05f;
+        }
+    }
+
+
+
 }
