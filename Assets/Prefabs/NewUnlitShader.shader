@@ -4,7 +4,9 @@ Shader "Unlit/NewUnlitShader"
     {
         _ColorTop("Top Color", Color) = (0.1, 0.1, 0.1, 1)
         _ColorBottom("Bottom Color", Color) = (0, 0, 0, 1)
-        _DepthRange("Depth Range", Float) = 10
+        _FogColor("Fog Color", Color) = (0.2, 0.2, 0.2, 1)
+        _DepthRange("Depth Range", Float) = 1
+        _FogStrength("Fog Strength", Float) = 1
     }
         SubShader
     {
@@ -31,7 +33,9 @@ Shader "Unlit/NewUnlitShader"
 
             fixed4 _ColorTop;
             fixed4 _ColorBottom;
+            fixed4 _FogColor;
             float _DepthRange;
+            float _FogStrength;
 
             v2f vert(appdata v)
             {
@@ -43,9 +47,15 @@ Shader "Unlit/NewUnlitShader"
 
             fixed4 frag(v2f i) : SV_Target
             {
+                // Depth gradient from world Y
                 float t = saturate(i.worldPos.y / _DepthRange);
-                fixed4 color = lerp(_ColorBottom, _ColorTop, t);
-                return color;
+                fixed4 baseColor = lerp(_ColorBottom, _ColorTop, t);
+
+                // Fog intensifies as Y decreases (goes deeper)
+                float fogFactor = saturate(0.1 - t) * _FogStrength;
+                baseColor = lerp(baseColor, _FogColor, fogFactor);
+
+                return baseColor;
             }
             ENDCG
         }
