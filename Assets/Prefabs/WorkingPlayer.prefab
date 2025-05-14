@@ -263,6 +263,7 @@ MonoBehaviour:
   moveSpeed: 5
   jumpHeight: 2
   thisScore: 0
+  anchor: {fileID: 0}
 --- !u!114 &4751035383103848721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -314,7 +315,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6964bc97aea2a4a4b89767cb607ac534, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerSpawnPoints: {fileID: 2215236759160314529, guid: 9dcc6098e913e00458c1e5aff6b510f1, type: 3}
+  Spawn1: {fileID: 0}
+  Spawn2: {fileID: 0}
 --- !u!1 &6723856402291220488
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,34 +4,22 @@ using System.Collections.Generic;
 
 public class NetworkPlayerSpawnHandlers : NetworkBehaviour
 {   
-    public GameObject PlayerSpawnPoints;
-
-    private Vector3[] spawnPoints; 
-    
-    private NetworkVariable<int> playerNum = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone);
-
-    void Awake() {
-
-         Transform[] allChildren = PlayerSpawnPoints.GetComponentsInChildren<Transform>();
-         List<Vector3> collectedSpawnPoints = new List<Vector3>();        
-
-         foreach (Transform child in allChildren)
-            {
-                if (child != PlayerSpawnPoints.transform) // Skip the root object itself
-{
-                    collectedSpawnPoints.Add(child.position);
-                    Debug.Log($"Spawn Point: {child.name} at {child.position}");
-            }
-        }
-        spawnPoints = collectedSpawnPoints.ToArray();
-    }
-
-
-
+    private GameObject PlayerSpawnPoints;
 
     public override void OnNetworkSpawn() {
-        int spawnIndex = (int)OwnerClientId % spawnPoints.Length;
-        transform.position = spawnPoints[spawnIndex];
+        // when the player spawns, find both spawn points
+        PlayerSpawnPoints = GameObject.Find("PlayerSpawns");
+        Transform spawnPoint1 = PlayerSpawnPoints.transform.GetChild(0);
+        Transform spawnPoint2 = PlayerSpawnPoints.transform.GetChild(1);
+
+        // move the player to spawn point based on if client/host
+        if (IsHost) {
+            transform.position = spawnPoint1.position;
+        }
+        else if (IsClient) {
+            transform.position = spawnPoint2.position;
+        }
+        
         
     }
 
