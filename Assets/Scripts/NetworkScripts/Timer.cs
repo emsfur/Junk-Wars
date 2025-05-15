@@ -63,7 +63,7 @@ public class Timer : NetworkBehaviour
 
         int minutes = Mathf.FloorToInt(time / 60);
         int seconds = Mathf.FloorToInt(time % 60);
-        timerText.text = $"{minutes:00}:{seconds:00}";
+        timerText.text = $"Time Remaining\n{minutes:00}:{seconds:00}";
     }
 
     [ClientRpc]

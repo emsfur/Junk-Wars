@@ -71,7 +71,7 @@ public class PointsHandler : NetworkBehaviour
             return;
         }
 
-        p1Points.text = $"{newValue}";
+        p1Points.text = $"Red Team: {newValue}";
         PlayScoreSoundClientRpc(1);
     }
 
@@ -83,7 +83,7 @@ public class PointsHandler : NetworkBehaviour
             return;
         }
 
-        p2Points.text = $"{newValue}";
+        p2Points.text = $"Blue Team: {newValue}";
         PlayScoreSoundClientRpc(2);
     }
 
