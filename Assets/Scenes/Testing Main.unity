@@ -5882,7 +5882,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   p1Points: {fileID: 1424098752}
   p2Points: {fileID: 596523062}
-  scoreSound: {fileID: 8300000, guid: ba39bf8baf6d13046889b2d64822381a, type: 3}
+  scoreSound: {fileID: 8300000, guid: c5cb2ac29e89dbf43a9b644caaad45e6, type: 3}
   team1AudioSource: {fileID: 625424933}
   team2AudioSource: {fileID: 1139409676}
 --- !u!1 &641684572

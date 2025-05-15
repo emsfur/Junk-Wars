@@ -13,7 +13,6 @@ public class PlayerInputClassM1 : NetworkBehaviour
     //private CinemachineVirtualCamera vc;
     [SerializeField] private Cinemachine.CinemachineVirtualCamera vc;
     [SerializeField] private AudioClip jumpClip;
-    [SerializeField] private AudioClip landClip;
     [SerializeField] private AudioClip walkClip;
     [SerializeField] private AudioClip pickupClip;
     [SerializeField] private AudioSource audioSource;
@@ -141,12 +140,6 @@ public class PlayerInputClassM1 : NetworkBehaviour
                 playerVelocity.y += Mathf.Sqrt(jumpHeight*-2.0f*gravityValue);
                 PlaySoundServerRpc("jump");
             }
-
-            if (!wasGroundedLastFrame && controller.isGrounded)
-            {
-                PlaySoundServerRpc("land");
-            }
-            wasGroundedLastFrame = controller.isGrounded;
             //   if(move != Vector3.zero) {
             //     gameObject.transform.forward = move; 
             //     }
@@ -280,9 +273,6 @@ public class PlayerInputClassM1 : NetworkBehaviour
         {
             case "jump":
                 clipToPlay = jumpClip;
-                break;
-            case "land":
-                clipToPlay = landClip;
                 break;
             case "walk":
                 clipToPlay = walkClip;
