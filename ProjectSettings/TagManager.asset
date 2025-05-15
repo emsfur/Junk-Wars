@@ -6,6 +6,7 @@ TagManager:
   tags:
   - AvoidMerge
   - Scrap
+  - Door
   layers:
   - Default
   - TransparentFX

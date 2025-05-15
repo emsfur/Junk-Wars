@@ -161,8 +161,26 @@ public class PlayerInputClassM1 : NetworkBehaviour
 
             // UpdateAnchorProxyServerRpc(anchor.position, anchor.rotation);
             PlayerScrapInteractions();
+            PlayerDoorInteraction();
         }
     }
+
+    void PlayerDoorInteraction() {
+        if (inputManager.DoorInteracted()) {
+            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out RaycastHit hit, 3)) {
+                GameObject obj = hit.collider.gameObject;
+
+                if (obj.tag == "Door") {
+                    obj.transform.parent.Find("SM_DoorDouble").Rotate(0f, -90.0f, 0f, Space.World);
+
+
+                }
+            }
+        }
+    }
+
 
     void PlayerScrapInteractions() {
         if (inputManager.PlayerInteracted()) {
@@ -175,7 +193,7 @@ public class PlayerInputClassM1 : NetworkBehaviour
                 inHand = null;
             }
             else {
-                // process what user is interacting with (scrap/door/others)
+                // process what user is interacting with (scrap)
                 ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
                 if (Physics.Raycast(ray, out RaycastHit hit, 3)) {

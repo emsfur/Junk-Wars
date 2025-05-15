@@ -45,4 +45,8 @@ public class InputManager : MonoBehaviour
     public bool PlayerInteracted() {
         return playerControls.Player.Interaction.triggered;
     }
+
+    public bool DoorInteracted() {
+        return playerControls.Player.DoorInteract.triggered;
+    }
 }
