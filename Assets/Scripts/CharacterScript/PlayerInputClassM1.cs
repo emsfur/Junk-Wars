@@ -12,6 +12,11 @@ public class PlayerInputClassM1 : NetworkBehaviour
     //private PlayerInput playerInput;
     //private CinemachineVirtualCamera vc;
     [SerializeField] private Cinemachine.CinemachineVirtualCamera vc;
+    [SerializeField] private AudioClip jumpClip;
+    [SerializeField] private AudioClip landClip;
+    [SerializeField] private AudioClip walkClip;
+    [SerializeField] private AudioClip pickupClip;
+    [SerializeField] private AudioSource audioSource;
     //[SerializeField]private CinemachineCamera.CinemachineVirtualCamera vc;
     //[SerializeField] private AudioClip walkAudio;
     //[SerializeField] private AudioClip jumpAudio;
@@ -49,7 +54,10 @@ public class PlayerInputClassM1 : NetworkBehaviour
     private Transform anchor; // client side
     [SerializeField] private Transform anchorProxyObject; // server side sync
     private Rigidbody anchorProxyRb;
-    
+
+    private bool wasGroundedLastFrame = true;
+    private float walkSoundCooldown = 0f;
+
     private void Start()
     {
          controller= GetComponent<CharacterController>();
@@ -107,6 +115,17 @@ public class PlayerInputClassM1 : NetworkBehaviour
             Vector3 move = new Vector3(moveInput.x,0f,moveInput.y);
             move=cameraTransform.forward * move.z + cameraTransform.right * move.x;
             move.y = 0f;
+
+            bool isWalking = move.magnitude > 0.1f && groundPlayer;
+
+            // Play walking sound with cooldown
+            if (isWalking && walkSoundCooldown <= 0f)
+            {
+                PlaySoundServerRpc("walk");
+                walkSoundCooldown = 0.5f;
+            }
+            walkSoundCooldown -= Time.deltaTime;
+
             controller.Move(move*Time.deltaTime*moveSpeed);
 
                 // if(move != Vector3.zero) {
@@ -115,21 +134,28 @@ public class PlayerInputClassM1 : NetworkBehaviour
                 // }
             
             //if (playerControls.Player.Jump.triggered && groundPlayer) {
-                if(inputManager.PlayerJumpedThisFrame() && groundPlayer){
+            if(inputManager.PlayerJumpedThisFrame() && groundPlayer){
                 // AudioSource.PlayClipAtPoint(jumpAudio,transform.position, 1f);
                 //jumpAudioSource.clip = jumpAudio;
                     //jumpAudioSource.Play();
-                    playerVelocity.y += Mathf.Sqrt(jumpHeight*-2.0f*gravityValue);
+                playerVelocity.y += Mathf.Sqrt(jumpHeight*-2.0f*gravityValue);
+                PlaySoundServerRpc("jump");
             }
-                //   if(move != Vector3.zero) {
-                //     gameObject.transform.forward = move; 
-                //     }
-                playerVelocity.y += gravityValue* Time.deltaTime;//*moveSpeed;
-                controller.Move(playerVelocity * Time.deltaTime);
+
+            if (!wasGroundedLastFrame && controller.isGrounded)
+            {
+                PlaySoundServerRpc("land");
+            }
+            wasGroundedLastFrame = controller.isGrounded;
+            //   if(move != Vector3.zero) {
+            //     gameObject.transform.forward = move; 
+            //     }
+            playerVelocity.y += gravityValue* Time.deltaTime;//*moveSpeed;
+            controller.Move(playerVelocity * Time.deltaTime);
             // walkAudioSource.clip = walkAudio;
             // walkAudioSource.Play();
                 //AudioSource.PlayClipAtPoint(walkAudio, transform.position,1f);
-                Debug.Log("Speed is" + moveSpeed);
+            Debug.Log("Speed is" + moveSpeed);
             // Debug.Log(controller.pos);
             Debug.Log("From playerInputController" + thisScore);
 
@@ -202,6 +228,8 @@ public class PlayerInputClassM1 : NetworkBehaviour
 
                 // obj.transform.localPosition = Vector3.zero;
                 obj.transform.localRotation = Quaternion.identity;
+
+                PlaySoundClientRpc("pickup");
             }
         }
     }
@@ -217,6 +245,38 @@ public class PlayerInputClassM1 : NetworkBehaviour
             itemRB.useGravity = true;
             itemBC.isTrigger = false;
             obj.transform.SetParent(null);
+        }
+    }
+
+    [ServerRpc]
+    void PlaySoundServerRpc(string soundType)
+    {
+        PlaySoundClientRpc(soundType);
+    }
+
+    [ClientRpc]
+    void PlaySoundClientRpc(string soundType)
+    {
+        AudioClip clipToPlay = null;
+        switch (soundType)
+        {
+            case "jump":
+                clipToPlay = jumpClip;
+                break;
+            case "land":
+                clipToPlay = landClip;
+                break;
+            case "walk":
+                clipToPlay = walkClip;
+                break;
+            case "pickup":
+                clipToPlay = pickupClip;
+                break;
+        }
+
+        if (clipToPlay != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(clipToPlay);
         }
     }
 
