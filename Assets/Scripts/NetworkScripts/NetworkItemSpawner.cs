@@ -9,8 +9,10 @@ public class NetworkItemSpawner : NetworkBehaviour
     [SerializeField] private GameObject ItemSpawnPoints; 
     private Vector3[] spawnPoints; 
 
-    // populate in editor with prefabs that'll be used for scrap
+    // populate in editor with prefabs that'll be used for scrap (must be setup as network objects)
     public GameObject[] items;
+
+    private List<int> spawnGen;
 
     public override void OnNetworkSpawn() {
         if (!IsServer) return;
@@ -29,10 +31,17 @@ public class NetworkItemSpawner : NetworkBehaviour
                             .Select(child => child.position)        // takes the position value 
                             .ToArray();                             // converts output into array to store into spawnPoints
 
-            // iterate though all the spawn points for this zone
-            for (int j = 0; j < spawnPoints.Length; j++) {
+
+            // choose half of the available spots for placing an item
+            spawnGen = Enumerable.Range(0, spawnPoints.Length)
+                                .OrderBy(x => Random.value)
+                                .Take(spawnPoints.Length / 2)
+                                .ToList();
+
+            // go through each spot generated and populate with item
+            foreach (int idx in spawnGen) {
                 // targets one specific spawn point
-                Vector3 spawnPos = spawnPoints[j];
+                Vector3 spawnPos = spawnPoints[idx];
 
                 // locally instantiate item
                 GameObject itemSpawn = Instantiate(items[0], spawnPos, Quaternion.identity);
@@ -40,7 +49,7 @@ public class NetworkItemSpawner : NetworkBehaviour
 
                 // get the network obj component to spawn item over network
                 var instanceNetworkObject = itemSpawn.GetComponent<NetworkObject>();
-                instanceNetworkObject.Spawn();   
+                instanceNetworkObject.Spawn(); 
             }
         }        
 
