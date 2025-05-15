@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731715, g: 0.13414735, b: 0.121078536, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731713, g: 0.13414738, b: 0.121078536, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -10324,7 +10324,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1240188443}
-  - component: {fileID: 1240188447}
   - component: {fileID: 1240188446}
   - component: {fileID: 1240188445}
   - component: {fileID: 1240188444}
@@ -10417,14 +10416,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &1240188447
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1240188442}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1243369218 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5513000363952131992, guid: 65931c1766cb7e341b4b3ff1f4197c4d, type: 3}
@@ -16158,6 +16149,7 @@ Transform:
   m_Children:
   - {fileID: 125411451}
   - {fileID: 1637660221}
+  - {fileID: 772011072}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

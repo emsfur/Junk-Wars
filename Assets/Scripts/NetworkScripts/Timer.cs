@@ -20,10 +20,6 @@ public class Timer : NetworkBehaviour
             Debug.Log("[Server] Starting Time Set: " + remainingTime.Value);
         }
     }
-    // private void Start()
-    // {
-        
-    // }
 
     private void Update()
     {
