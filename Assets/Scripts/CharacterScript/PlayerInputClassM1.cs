@@ -160,8 +160,6 @@ public class PlayerInputClassM1 : NetworkBehaviour
                         // marks item inhand on client side
                         inHand = obj;
 
-                        Debug.Log("ems: picking up scrap");
-
                         // stores network reference to let server handle the rest
                         inHand.TryGetComponent<NetworkObject>(out var netObj);
 

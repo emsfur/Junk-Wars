@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ScrapData : MonoBehaviour
 {
-    public int value = 25;
-    public bool beingHeld = false;
+    public int value = 1;
+    // public bool beingHeld = false;
 
     // Start is called before the first frame update
     void Start()
