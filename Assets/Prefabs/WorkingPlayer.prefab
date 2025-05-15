@@ -297,6 +297,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vc: {fileID: 5948537412801011954}
+  groundPlayer: 0
   moveSpeed: 5
   jumpHeight: 2
   thisScore: 0
@@ -475,8 +476,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7831667487957248328}
-  m_LocalRotation: {x: -0.3558829, y: -0.013165395, z: 0.0050225244, w: -0.9344243}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.35588294, y: -0.013165396, z: 0.005022525, w: -0.93442434}
+  m_LocalPosition: {x: 0, y: 0.48399925, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -644,8 +645,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1235082848409120808}
   - component: {fileID: 8368076955476276521}
-  - component: {fileID: 320266498403422753}
   - component: {fileID: 3681466251233434119}
+  - component: {fileID: 603951034896663384}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -680,19 +681,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &320266498403422753
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8521268152348017790}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36d1163fa822e8b418a0a603ec078d5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Damping: 0
 --- !u!114 &3681466251233434119
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -755,3 +743,16 @@ MonoBehaviour:
     m_LegacyHeadingDefinition: -1
     m_LegacyVelocityFilterStrength: -1
   m_ApplyBeforeBody: 0
+--- !u!114 &603951034896663384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8521268152348017790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36d1163fa822e8b418a0a603ec078d5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Damping: 0

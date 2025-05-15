@@ -20,7 +20,7 @@ public class PlayerInputClassM1 : NetworkBehaviour
     //^ a presdesigned scripted?
     private InputManager inputManager;
     private Transform cameraTransform;
-    private bool groundPlayer;
+    public bool groundPlayer;
     // for the ability to jump;
     //private PlayerInput playerInput;
     public float moveSpeed =2f;
@@ -133,11 +133,10 @@ public class PlayerInputClassM1 : NetworkBehaviour
             // Debug.Log(controller.pos);
             Debug.Log("From playerInputController" + thisScore);
 
-            UpdateAnchorProxyServerRpc(anchor.position);
+            // UpdateAnchorProxyServerRpc(anchor.position, anchor.rotation);
             PlayerScrapInteractions();
         }
     }
-
 
     void PlayerScrapInteractions() {
         if (inputManager.PlayerInteracted()) {
@@ -166,8 +165,7 @@ public class PlayerInputClassM1 : NetworkBehaviour
                         // stores network reference to let server handle the rest
                         inHand.TryGetComponent<NetworkObject>(out var netObj);
 
-                        InteractWithObjectServerRpc(netObj, hit.transform.position);
-
+                        HandlePickUpServerRpc(netObj);
 
                     }
                 }
@@ -176,48 +174,135 @@ public class PlayerInputClassM1 : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void UpdateAnchorProxyServerRpc(Vector3 anchorPosition)
+    void HandlePickUpServerRpc(NetworkObjectReference objRef, ServerRpcParams rpcParams = default) 
     {
-        anchorProxyObject.position = anchorPosition;
+        ulong senderId = rpcParams.Receive.SenderClientId;
+        NetworkManager.Singleton.ConnectedClients.TryGetValue(senderId, out NetworkClient targetClient);
+
+        // arguments: reference to scrap object, reference to player interacting with object
+        PickupObjectServerRpc(objRef, targetClient.PlayerObject.NetworkObjectId);
     }
 
 
     [ServerRpc]
-    private void DropObjectServerRpc(NetworkObjectReference objRef)
+    void PickupObjectServerRpc(NetworkObjectReference objRef, ulong targetNetPlayerObjId)
     {
         if (objRef.TryGet(out var obj))
         {
-            SpringJoint joint = obj.GetComponent<SpringJoint>();
-            Rigidbody rb = obj.GetComponent<Rigidbody>();
+            if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(targetNetPlayerObjId, out NetworkObject playerObj))
+            {
+                Collider itemBC = obj.GetComponent<BoxCollider>();
+                Rigidbody itemRB = obj.GetComponent<Rigidbody>();
 
-            rb.useGravity = true;
-            Destroy(joint);
+                itemRB.useGravity = false;
+                itemBC.enabled = false;
+
+                obj.transform.SetParent(playerObj.transform);
+
+                Transform cameraTransform = playerObj.transform.Find("MainCamera");
+                obj.transform.localPosition = new Vector3(0f, -0.5f, 1f);
+
+                // obj.transform.localPosition = Vector3.zero;
+                obj.transform.localRotation = Quaternion.identity;
+            }
         }
     }
 
     [ServerRpc]
-    private void InteractWithObjectServerRpc(NetworkObjectReference objRef, Vector3 hitPos) {
+    void DropObjectServerRpc(NetworkObjectReference objRef)
+    {
         if (objRef.TryGet(out var obj))
         {
-            Rigidbody itemRb = obj.GetComponent<Rigidbody>();
-            itemRb.useGravity = false;
-            itemRb.velocity = Vector3.zero;
-            anchor.transform.position = hitPos;
+            Collider itemBC = obj.GetComponent<BoxCollider>();
+            Rigidbody itemRB = obj.GetComponent<Rigidbody>();
 
-            Rigidbody anchorRb = anchorProxyRb; 
-            itemRb.angularVelocity = Vector3.zero;
-
-            SpringJoint joint = obj.gameObject.AddComponent<SpringJoint>();
-            joint.connectedBody = anchorRb;
-
-            joint.spring = 100f; // pull force towards anchor
-            joint.damper = 50f; // wobble modifier
-
-            // spring stretch limits
-            joint.minDistance = 0.01f;
-            joint.maxDistance = 0.05f;
+            itemRB.useGravity = true;
+            itemBC.enabled = true;
+            obj.transform.SetParent(null);
         }
     }
+
+    // partial implementation where pick up involves more physics
+    // void PlayerScrapInteractions() {
+    //     if (inputManager.PlayerInteracted()) {
+    //         // if player has object in hand, drop it where it is
+    //         if (inHand != null) {
+
+    //             inHand.TryGetComponent<NetworkObject>(out var netObj);
+    //             DropObjectServerRpc(netObj);
+
+    //             inHand = null;
+    //         }
+    //         else {
+    //             // process what user is interacting with (scrap/door/others)
+    //             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+    //             if (Physics.Raycast(ray, out RaycastHit hit, 3)) {
+    //                 GameObject obj = hit.collider.gameObject;
+
+    //                 // if player lookcing at scrap and doesn't have item in hand
+    //                 if (obj.tag == "Scrap" && inHand == null) {
+    //                     // marks item inhand on client side
+    //                     inHand = obj;
+
+    //                     Debug.Log("ems: picking up scrap");
+
+    //                     // stores network reference to let server handle the rest
+    //                     inHand.TryGetComponent<NetworkObject>(out var netObj);
+
+    //                     InteractWithObjectServerRpc(netObj, hit.transform.position);
+
+
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+
+    // [ServerRpc]
+    // private void UpdateAnchorProxyServerRpc(Vector3 anchorPosition, Quaternion anchorRotation)
+    // {
+    //     anchorProxyObject.position = anchorPosition;
+    //     anchorProxyObject.rotation = anchorRotation;
+    // }
+
+
+    // [ServerRpc]
+    // private void DropObjectServerRpc(NetworkObjectReference objRef)
+    // {
+    //     if (objRef.TryGet(out var obj))
+    //     {
+    //         SpringJoint joint = obj.GetComponent<SpringJoint>();
+    //         Rigidbody rb = obj.GetComponent<Rigidbody>();
+
+    //         rb.useGravity = true;
+    //         Destroy(joint);
+    //     }
+    // }
+
+    // [ServerRpc]
+    // private void InteractWithObjectServerRpc(NetworkObjectReference objRef, Vector3 hitPos) {
+    //     if (objRef.TryGet(out var obj))
+    //     {
+    //         Rigidbody itemRb = obj.GetComponent<Rigidbody>();
+    //         itemRb.useGravity = false;
+    //         itemRb.velocity = Vector3.zero;
+    //         anchorProxyObject.position = hitPos;
+
+    //         Rigidbody anchorRb = anchorProxyRb; 
+    //         itemRb.angularVelocity = Vector3.zero;
+
+    //         SpringJoint joint = obj.gameObject.AddComponent<SpringJoint>();
+    //         joint.connectedBody = anchorRb;
+
+    //         joint.spring = 100f; // pull force towards anchor
+    //         joint.damper = 50f; // wobble modifier
+
+    //         // spring stretch limits
+    //         joint.minDistance = 0.01f;
+    //         joint.maxDistance = 0.05f;
+    //     }
+    // }
 
 
 

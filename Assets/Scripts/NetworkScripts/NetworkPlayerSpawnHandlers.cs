@@ -17,6 +17,7 @@ public class NetworkPlayerSpawnHandlers : NetworkBehaviour
             transform.position = spawnPoint1.position;
         }
         else if (IsClient) {
+            Debug.Log("ems: This is clident");
             transform.position = spawnPoint2.position;
         }
         
