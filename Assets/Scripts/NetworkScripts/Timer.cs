@@ -6,6 +6,11 @@ public class Timer : NetworkBehaviour
 {
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private float startingTime = 300f;
+    [SerializeField] private AudioClip timerBeepSound;
+    [SerializeField] private AudioSource timerAudioSource;
+
+    private int lastSecondPlayed = -1;
+    private float beepThreshold = 30f;
 
     private NetworkVariable<float> remainingTime = new NetworkVariable<float>(
         writePerm: NetworkVariableWritePermission.Server);
@@ -29,6 +34,14 @@ public class Timer : NetworkBehaviour
             if (remainingTime.Value > 0f)
             {
                 remainingTime.Value -= Time.deltaTime;
+
+                int currentSecond = Mathf.CeilToInt(remainingTime.Value);
+
+                if (currentSecond <= beepThreshold && currentSecond != lastSecondPlayed && currentSecond > 0)
+                {
+                    lastSecondPlayed = currentSecond;
+                    PlayTimerBeepClientRpc();
+                }
             }
             else
             {
@@ -51,5 +64,14 @@ public class Timer : NetworkBehaviour
         int minutes = Mathf.FloorToInt(time / 60);
         int seconds = Mathf.FloorToInt(time % 60);
         timerText.text = $"{minutes:00}:{seconds:00}";
+    }
+
+    [ClientRpc]
+    private void PlayTimerBeepClientRpc()
+    {
+        if (timerBeepSound != null && timerAudioSource != null)
+        {
+            timerAudioSource.PlayOneShot(timerBeepSound);
+        }
     }
 }
