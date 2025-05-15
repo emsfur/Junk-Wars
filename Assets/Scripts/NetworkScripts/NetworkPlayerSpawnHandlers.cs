@@ -15,36 +15,17 @@ public class NetworkPlayerSpawnHandlers : NetworkBehaviour
         spawnPoint2 = PlayerSpawnPoints.transform.GetChild(1);
 
         // move the player to spawn point based on if client/host
-        // RequestRespawnServerRpc(IsHost);   
         Respawn();
     }
 
-    // public void RespawnP1()
-    // {
-    //     if (IsHost) {
-    //         transform.position = spawnPoint1.position;
-    //     }
-    // }
-
-    // public void RespawnP2()
-    // {
-    //     if (IsClient) {
-    //         transform.position = spawnPoint2.position;
-    //     }
-    // }
-
-    public void Respawn() 
+    public void Respawn()
     {
-        transform.position = spawnPoint1.position;
+        if (IsHost) {
+            transform.position = spawnPoint1.position;
+        }
+        else if (IsClient) {
+            transform.position = spawnPoint2.position;
+        }  
     }
-
-    // [ServerRpc]
-    // public void RequestRespawnServerRpc(bool host)
-    // {
-    //     if (host) {
-    //         Debug.Log("THIS RAN AGAIN");
-    //         transform.position = spawnPoint1.position;
-    //     }
-    // }
 
 }
