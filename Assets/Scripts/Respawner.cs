@@ -7,8 +7,13 @@ public class Respawner : NetworkBehaviour
 {
     void OnTriggerEnter(Collider other) 
     {   
-        if (other.gameObject.tag == "Player") {
-            other.gameObject.GetComponent<NetworkPlayerSpawnHandlers>().Respawn();
+        if (other.CompareTag("Player")) {
+            var spawnHandler = other.GetComponent<NetworkPlayerSpawnHandlers>();
+            if (spawnHandler != null)
+            {
+                spawnHandler.HandleDeathAndRespawn();
+            }
         }
+
     }
 }
