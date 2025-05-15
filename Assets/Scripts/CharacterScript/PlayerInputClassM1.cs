@@ -166,9 +166,7 @@ public class PlayerInputClassM1 : NetworkBehaviour
                 GameObject obj = hit.collider.gameObject;
 
                 if (obj.tag == "Door") {
-                    obj.transform.parent.Find("SM_DoorDouble").Rotate(0f, -90.0f, 0f, Space.World);
-
-
+                    obj.transform.GetComponent<DoorHandler>().ToggleDoor();
                 }
             }
         }

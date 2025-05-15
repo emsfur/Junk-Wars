@@ -4,15 +4,24 @@ using UnityEngine;
 
 public class DoorHandler : MonoBehaviour
 {
-    [SerializeField] private Transform door1;
-    [SerializeField] private Transform door2;
+    public hinge hingeState;
 
+    public enum hinge {
+        leftHinge,
+        rightHinge
+    }
+
+    // begins door state as closed
     private bool doorOpen = false;
+    private int hingeFlip = 1;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        // if the door hinge is on the left, then make sure door rotates properly
+        if (hingeState == hinge.leftHinge) {
+            hingeFlip = -1;
+        }
     }
 
     // Update is called once per frame
@@ -21,13 +30,16 @@ public class DoorHandler : MonoBehaviour
         
     }
 
-    void ToggleDoor() {
-        if (door1 != null) {
-            door1.Rotate(0f, -90.0f, 0f, Space.World);
+    public void ToggleDoor() {
+        // if the door is open, rotate it to close
+        if (doorOpen) {
+            transform.Rotate(0f, 90.0f * hingeFlip, 0f, Space.World);
+            doorOpen = false;
         }
-
-        if (door2 != null) {
-            door2.Rotate(0f, -90.0f, 0f, Space.World);
+        // if door is closed, rotate it to open
+        else {
+            transform.Rotate(0f, -90.0f * hingeFlip, 0f, Space.World);
+            doorOpen = true;
         }
     }
 
