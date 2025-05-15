@@ -15,7 +15,6 @@ public class Timer : NetworkBehaviour
         Debug.Log("The StartingTime:" + startingTime);
         if (IsServer)
         {
-            //remainingTime.Value = startingTime;
             remainingTime.Value = startingTime;
             Debug.Log("[Server] Starting Time Set: " + remainingTime.Value);
         }
@@ -29,9 +28,7 @@ public class Timer : NetworkBehaviour
         {
             if (remainingTime.Value > 0f)
             {
-
                 remainingTime.Value -= Time.deltaTime;
-                //remainingTime.Value -= 1;
             }
             else
             {

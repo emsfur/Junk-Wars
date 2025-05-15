@@ -193,7 +193,7 @@ public class PlayerInputClassM1 : NetworkBehaviour
                 Rigidbody itemRB = obj.GetComponent<Rigidbody>();
 
                 itemRB.useGravity = false;
-                itemBC.enabled = false;
+                itemBC.isTrigger = true;
 
                 obj.transform.SetParent(playerObj.transform);
 
@@ -215,7 +215,7 @@ public class PlayerInputClassM1 : NetworkBehaviour
             Rigidbody itemRB = obj.GetComponent<Rigidbody>();
 
             itemRB.useGravity = true;
-            itemBC.enabled = true;
+            itemBC.isTrigger = false;
             obj.transform.SetParent(null);
         }
     }
