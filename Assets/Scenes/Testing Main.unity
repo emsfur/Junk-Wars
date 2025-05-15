@@ -5723,7 +5723,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.533
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -7128,7 +7128,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.503
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -8593,7 +8593,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 176785256901508900, guid: e6b6ab4f04597944c86d2c90f65b1b83, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -22.758621
+      value: -22.82
       objectReference: {fileID: 0}
     - target: {fileID: 176785256901508900, guid: e6b6ab4f04597944c86d2c90f65b1b83, type: 3}
       propertyPath: m_LocalPosition.y
@@ -8601,7 +8601,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 176785256901508900, guid: e6b6ab4f04597944c86d2c90f65b1b83, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -83.2069
+      value: -83.09
       objectReference: {fileID: 0}
     - target: {fileID: 176785256901508900, guid: e6b6ab4f04597944c86d2c90f65b1b83, type: 3}
       propertyPath: m_LocalRotation.w
@@ -10420,7 +10420,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.512
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -13832,7 +13832,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4241824191544095104, guid: 65931c1766cb7e341b4b3ff1f4197c4d, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4241824191544095104, guid: 65931c1766cb7e341b4b3ff1f4197c4d, type: 3}
       propertyPath: m_TagString
@@ -17856,8 +17856,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1804582736}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.82812476, y: 10.417274, z: 0.039162636}
+  m_LocalRotation: {x: 0.18757945, y: 0.026766844, z: 0.005113613, w: -0.98187137}
+  m_LocalPosition: {x: -5.3255, y: 1.74, z: -17.7173}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -18188,7 +18188,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 176785256901508900, guid: e6b6ab4f04597944c86d2c90f65b1b83, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -34.372414
+      value: -34.472
       objectReference: {fileID: 0}
     - target: {fileID: 176785256901508900, guid: e6b6ab4f04597944c86d2c90f65b1b83, type: 3}
       propertyPath: m_LocalPosition.y

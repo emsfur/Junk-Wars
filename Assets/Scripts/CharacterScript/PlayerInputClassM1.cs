@@ -258,13 +258,21 @@ public class PlayerInputClassM1 : NetworkBehaviour
     }
 
     [ServerRpc]
-    void PlaySoundServerRpc(string soundType)
+    void PlaySoundServerRpc(string soundType, ServerRpcParams rpcParams = default)
     {
-        PlaySoundClientRpc(soundType);
+        ClientRpcParams ownerOnly = new ClientRpcParams
+        {
+            Send = new ClientRpcSendParams
+            {
+                TargetClientIds = new ulong[] { rpcParams.Receive.SenderClientId }
+            }
+        };
+
+        PlaySoundClientRpc(soundType, ownerOnly);
     }
 
     [ClientRpc]
-    void PlaySoundClientRpc(string soundType)
+    void PlaySoundClientRpc(string soundType, ClientRpcParams clientRpcParams = default)
     {
         AudioClip clipToPlay = null;
         switch (soundType)

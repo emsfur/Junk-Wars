@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6693904815711196511
 Transform:
   m_ObjectHideFlags: 0
@@ -298,9 +298,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vc: {fileID: 5948537412801011954}
-  jumpClip: {fileID: 8300000, guid: 4e349dc959014a845b9aa317d1c2b7f0, type: 3}
-  landClip: {fileID: 8300000, guid: eaae8fe8d600e1f459f34aa5757fa3b8, type: 3}
-  walkClip: {fileID: 8300000, guid: 023ea3ddeaa8dd146b7633a0800e5a0e, type: 3}
+  jumpClip: {fileID: 8300000, guid: f85e18b3e969dac4bbfc7f6b18139932, type: 3}
+  walkClip: {fileID: 8300000, guid: 0909de896e9029541b92ae05fe15e4b6, type: 3}
   pickupClip: {fileID: 8300000, guid: ba39bf8baf6d13046889b2d64822381a, type: 3}
   audioSource: {fileID: 8977294504398999863}
   groundPlayer: 0
@@ -359,6 +358,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6964bc97aea2a4a4b89767cb607ac534, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deathSound: {fileID: 8300000, guid: 566d2ea6240b489479a6e9fd608c2621, type: 3}
+  audioSource: {fileID: 8977294504398999863}
 --- !u!82 &8977294504398999863
 AudioSource:
   m_ObjectHideFlags: 0
@@ -579,7 +580,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7831667487957248328}
   m_LocalRotation: {x: -0.35588294, y: -0.013165396, z: 0.005022525, w: -0.93442434}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5039997, z: 0.437}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -606,7 +607,7 @@ MonoBehaviour:
   m_Priority: 10
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
-  m_Follow: {fileID: 6723856401740883121}
+  m_Follow: {fileID: 6723856401575471178}
   m_Lens:
     FieldOfView: 60
     OrthographicSize: 5
