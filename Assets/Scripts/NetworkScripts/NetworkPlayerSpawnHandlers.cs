@@ -3,7 +3,10 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class NetworkPlayerSpawnHandlers : NetworkBehaviour
-{   
+{
+    [SerializeField] private AudioClip deathSound;
+    [SerializeField] private AudioSource audioSource;
+
     private GameObject PlayerSpawnPoints;
     Transform spawnPoint1;
     Transform spawnPoint2;  
@@ -28,4 +31,20 @@ public class NetworkPlayerSpawnHandlers : NetworkBehaviour
         }  
     }
 
+    public void HandleDeathAndRespawn()
+    {
+        PlayDeathSoundClientRpc();
+        Respawn();
+    }
+
+    [ClientRpc]
+    private void PlayDeathSoundClientRpc()
+    {
+        if (!IsOwner) return; 
+
+        if (deathSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(deathSound);
+        }
+    }
 }

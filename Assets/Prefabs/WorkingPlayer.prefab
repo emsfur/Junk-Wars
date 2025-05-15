@@ -299,7 +299,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vc: {fileID: 5948537412801011954}
   jumpClip: {fileID: 8300000, guid: 4e349dc959014a845b9aa317d1c2b7f0, type: 3}
-  landClip: {fileID: 8300000, guid: eaae8fe8d600e1f459f34aa5757fa3b8, type: 3}
   walkClip: {fileID: 8300000, guid: 023ea3ddeaa8dd146b7633a0800e5a0e, type: 3}
   pickupClip: {fileID: 8300000, guid: ba39bf8baf6d13046889b2d64822381a, type: 3}
   audioSource: {fileID: 8977294504398999863}
@@ -359,6 +358,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6964bc97aea2a4a4b89767cb607ac534, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deathSound: {fileID: 8300000, guid: 566d2ea6240b489479a6e9fd608c2621, type: 3}
+  audioSource: {fileID: 8977294504398999863}
 --- !u!82 &8977294504398999863
 AudioSource:
   m_ObjectHideFlags: 0
