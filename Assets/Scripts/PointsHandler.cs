@@ -8,6 +8,9 @@ public class PointsHandler : NetworkBehaviour
 {
     [SerializeField] private TextMeshProUGUI p1Points;
     [SerializeField] private TextMeshProUGUI p2Points;
+    [SerializeField] private AudioClip scoreSound;
+    [SerializeField] private AudioSource team1AudioSource;
+    [SerializeField] private AudioSource team2AudioSource;
 
     private NetworkVariable<int> player1Points = new NetworkVariable<int>(writePerm: NetworkVariableWritePermission.Server);
     private NetworkVariable<int> player2Points = new NetworkVariable<int>(writePerm: NetworkVariableWritePermission.Server);
@@ -44,6 +47,22 @@ public class PointsHandler : NetworkBehaviour
         player2Points.Value += val;
     }
 
+    [ClientRpc]
+    void PlayScoreSoundClientRpc(int team)
+    {
+        if (scoreSound == null)
+            return;
+
+        if (team == 1 && team1AudioSource != null)
+        {
+            team1AudioSource.PlayOneShot(scoreSound);
+        }
+        else if (team == 2 && team2AudioSource != null)
+        {
+            team2AudioSource.PlayOneShot(scoreSound);
+        }
+    }
+
     private void OnPlayer1PointsChanged(int oldValue, int newValue)
     {
         if (p1Points == null)
@@ -53,6 +72,7 @@ public class PointsHandler : NetworkBehaviour
         }
 
         p1Points.text = $"{newValue}";
+        PlayScoreSoundClientRpc(1);
     }
 
     private void OnPlayer2PointsChanged(int oldValue, int newValue)
@@ -64,6 +84,7 @@ public class PointsHandler : NetworkBehaviour
         }
 
         p2Points.text = $"{newValue}";
+        PlayScoreSoundClientRpc(2);
     }
 
 
