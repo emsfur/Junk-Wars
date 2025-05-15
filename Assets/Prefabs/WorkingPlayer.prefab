@@ -298,8 +298,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vc: {fileID: 5948537412801011954}
-  jumpClip: {fileID: 8300000, guid: 4e349dc959014a845b9aa317d1c2b7f0, type: 3}
-  walkClip: {fileID: 8300000, guid: 023ea3ddeaa8dd146b7633a0800e5a0e, type: 3}
+  jumpClip: {fileID: 8300000, guid: f85e18b3e969dac4bbfc7f6b18139932, type: 3}
+  walkClip: {fileID: 8300000, guid: 0909de896e9029541b92ae05fe15e4b6, type: 3}
   pickupClip: {fileID: 8300000, guid: ba39bf8baf6d13046889b2d64822381a, type: 3}
   audioSource: {fileID: 8977294504398999863}
   groundPlayer: 0
