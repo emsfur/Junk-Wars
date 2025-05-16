@@ -74,4 +74,10 @@ public class Timer : NetworkBehaviour
             timerAudioSource.PlayOneShot(timerBeepSound);
         }
     }
+
+    public bool timerFin()
+    {
+        
+        return (remainingTime.Value > 0);
+    }
 }

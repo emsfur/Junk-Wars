@@ -15,7 +15,8 @@ public class PointsHandler : NetworkBehaviour
     private NetworkVariable<int> player1Points = new NetworkVariable<int>(writePerm: NetworkVariableWritePermission.Server);
     private NetworkVariable<int> player2Points = new NetworkVariable<int>(writePerm: NetworkVariableWritePermission.Server);
 
-    public override void OnNetworkSpawn() {
+    public override void OnNetworkSpawn()
+    {
         if (IsServer)
         {
             player1Points.Value = 0;
@@ -29,21 +30,27 @@ public class PointsHandler : NetworkBehaviour
     }
 
     // handles adding/subtracting points from player variables
-    public void UpdatePoints(int player, int val) {
-        if (player == 1) {
+    public void UpdatePoints(int player, int val)
+    {
+        if (player == 1)
+        {
             ModPointsP1ServerRpc(val);
-        } else if (player == 2) {
+        }
+        else if (player == 2)
+        {
             ModPointsP2ServerRpc(val);
         }
     }
 
     [ServerRpc(RequireOwnership = false)]
-    void ModPointsP1ServerRpc(int val) {
+    void ModPointsP1ServerRpc(int val)
+    {
         player1Points.Value += val;
     }
 
     [ServerRpc(RequireOwnership = false)]
-    void ModPointsP2ServerRpc(int val) {
+    void ModPointsP2ServerRpc(int val)
+    {
         player2Points.Value += val;
     }
 
@@ -86,6 +93,14 @@ public class PointsHandler : NetworkBehaviour
         p2Points.text = $"Blue Team: {newValue}";
         PlayScoreSoundClientRpc(2);
     }
-
+    public int GetP1Points()
+    {
+        return player1Points.Value;
+    }
+    
+    public int GetP2Points()
+    {
+        return player2Points.Value;
+    }
 
 }
