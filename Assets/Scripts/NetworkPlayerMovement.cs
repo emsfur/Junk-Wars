@@ -6,7 +6,8 @@ using UnityEngine.InputSystem;
 
 public class NetworkPlayerMovement : NetworkBehaviour
 {
-	private void Update() {
+	//Movement logic for Playable Characters
+    private void Update() {
         if (!IsOwner) return;    
 
         Vector3 moveDir = Vector3.zero;
@@ -23,6 +24,7 @@ public class NetworkPlayerMovement : NetworkBehaviour
 
 	}
 
+    //Moving and rotating characters over the server
     [ServerRpc]
     void MovePlayerServerRpc(Vector3 moveDir) {
         transform.position += moveDir * 3f * Time.deltaTime;

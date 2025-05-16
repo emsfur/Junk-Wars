@@ -42,6 +42,4 @@ public class DoorHandler : MonoBehaviour
             doorOpen = true;
         }
     }
-
-
 }

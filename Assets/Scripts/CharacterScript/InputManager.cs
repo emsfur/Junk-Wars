@@ -5,7 +5,7 @@ public class InputManager : MonoBehaviour
     // Start is called before the first frame update
    
    
-     private static InputManager _instance;
+    private static InputManager _instance;
     public static InputManager Instance {
         get {
             return _instance;

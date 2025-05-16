@@ -7098,7 +7098,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timerText: {fileID: 772940087}
   startingTime: 300
-  timerBeepSound: {fileID: 8300000, guid: 1ed8fb76fc64e4e46847348138782234, type: 3}
+  timerBeepSound: {fileID: 8300000, guid: b83bf8726a7fac349a54389f0c57cda6, type: 3}
   timerAudioSource: {fileID: 772940089}
 --- !u!114 &772940087
 MonoBehaviour:
