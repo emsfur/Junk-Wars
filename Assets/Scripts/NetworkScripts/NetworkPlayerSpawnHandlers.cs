@@ -21,6 +21,7 @@ public class NetworkPlayerSpawnHandlers : NetworkBehaviour
         Respawn();
     }
 
+    //Spawns players on different zones depending on host or client
     public void Respawn()
     {
         if (IsHost) {
@@ -31,12 +32,14 @@ public class NetworkPlayerSpawnHandlers : NetworkBehaviour
         }  
     }
 
+    //Logic for respawning player on death and plays death sound
     public void HandleDeathAndRespawn()
     {
         PlayDeathSoundClientRpc();
         Respawn();
     }
 
+    //Logic for playing sound on player death
     [ClientRpc]
     private void PlayDeathSoundClientRpc()
     {

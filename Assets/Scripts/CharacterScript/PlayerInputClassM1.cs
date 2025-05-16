@@ -4,50 +4,22 @@ using Cinemachine;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerInputClassM1 : NetworkBehaviour
-//public class playerInputClass : MonoBehaviour
 {
-   // private static InputManager _instance;
-    // Start is called before the first frame update
-    //public Rigidbody2D rb;
-    //private PlayerInput playerInput;
-    //private CinemachineVirtualCamera vc;
     [SerializeField] private Cinemachine.CinemachineVirtualCamera vc;
     [SerializeField] private AudioClip jumpClip;
     [SerializeField] private AudioClip walkClip;
     [SerializeField] private AudioClip pickupClip;
     [SerializeField] private AudioSource audioSource;
-    //[SerializeField]private CinemachineCamera.CinemachineVirtualCamera vc;
-    //[SerializeField] private AudioClip walkAudio;
-    //[SerializeField] private AudioClip jumpAudio;
     private CharacterController controller;
-
-    //^ a presdesigned scripted?
     private InputManager inputManager;
     private Transform cameraTransform;
     public bool groundPlayer;
-    // for the ability to jump;
-    //private PlayerInput playerInput;
     public float moveSpeed =2f;
-    //move speed duh
-    //public InputAction playerControls;
     public PlayerControls playerControls;
-    //the stupid fucking aciton map
     private Vector3 playerVelocity;
-    
-    //for the need for speed
     public float jumpHeight =100f;
-    //For how one jumps
-    //Vector2 moveDirection = Vector2.zero;
-    //private InputAction move;
     private float gravityValue = -9.81f;
-
     public int thisScore =0;
-    //private AudioSource jumpAudioSource;
-    //private AudioSource walkAudioSource;
-    
-//   private static InputManager _instance;
-
-    //handing player interaction
     private Ray ray;
     private GameObject inHand;
     private Transform anchor; // client side
@@ -59,17 +31,9 @@ public class PlayerInputClassM1 : NetworkBehaviour
 
     private void Start()
     {
-         controller= GetComponent<CharacterController>();
-         //inputManager = InputManager.Instance;
-         inputManager = InputManager.Instance;
-        //  if(inputManager == null) {
-        //     Debug.LogError("nOt foud");
-        //  }
+        controller= GetComponent<CharacterController>();
+        inputManager = InputManager.Instance;
         cameraTransform = Camera.main.transform;
-       // jumpAudioSource = GetComponent<AudioSource>();
-       // walkAudioSource = GetComponent<AudioSource>();
-
-       
     }
     public override void OnNetworkSpawn()
     {
@@ -84,9 +48,6 @@ public class PlayerInputClassM1 : NetworkBehaviour
 
             // grabs item anchor (located as a child of main camera)
             anchor = Camera.main.transform.Find("ItemAnchor");
-
-
-            // anchorProxyRb = anchorProxyObject.GetComponent<Rigidbody>();
         }
         else {
             vc.Priority =0;
@@ -99,6 +60,7 @@ public class PlayerInputClassM1 : NetworkBehaviour
         if(!IsOwner) {
             return;
         }
+        //Start camera and character speed after grounding them
         else if(IsOwner) {
             cameraTransform = Camera.main.transform;
             groundPlayer = controller.isGrounded;
@@ -106,11 +68,8 @@ public class PlayerInputClassM1 : NetworkBehaviour
             if(groundPlayer && playerVelocity.y < 0) {
                 playerVelocity.y = 0f;
             }
-        
-            //Vector2 moveInput = playerControls.Touch.Moving.ReadValue<Vector2>();
-            //Vector2 moveInput = playerControls.Player.Move.ReadValue<Vector2>();
+
             Vector2 moveInput = inputManager.GetPlayerMovement();
-            //Debug.Log(this.transform.position);
             Vector3 move = new Vector3(moveInput.x,0f,moveInput.y);
             move=cameraTransform.forward * move.z + cameraTransform.right * move.x;
             move.y = 0f;
@@ -127,29 +86,15 @@ public class PlayerInputClassM1 : NetworkBehaviour
 
             controller.Move(move*Time.deltaTime*moveSpeed);
 
-                // if(move != Vector3.zero) {
-                //     //controller.Move(move);
-                //     gameObject.transform.forward=move;
-                // }
-            
-            //if (playerControls.Player.Jump.triggered && groundPlayer) {
+            //Logic for jumping action and sound
             if(inputManager.PlayerJumpedThisFrame() && groundPlayer){
-                // AudioSource.PlayClipAtPoint(jumpAudio,transform.position, 1f);
-                //jumpAudioSource.clip = jumpAudio;
-                    //jumpAudioSource.Play();
                 playerVelocity.y += Mathf.Sqrt(jumpHeight*-2.0f*gravityValue);
                 PlaySoundServerRpc("jump");
             }
-            //   if(move != Vector3.zero) {
-            //     gameObject.transform.forward = move; 
-            //     }
+
             playerVelocity.y += gravityValue* Time.deltaTime;//*moveSpeed;
             controller.Move(playerVelocity * Time.deltaTime);
-            // walkAudioSource.clip = walkAudio;
-            // walkAudioSource.Play();
-                //AudioSource.PlayClipAtPoint(walkAudio, transform.position,1f);
             Debug.Log("Speed is" + moveSpeed);
-            // Debug.Log(controller.pos);
             Debug.Log("From playerInputController" + thisScore);
 
             // UpdateAnchorProxyServerRpc(anchor.position, anchor.rotation);
@@ -158,6 +103,7 @@ public class PlayerInputClassM1 : NetworkBehaviour
         }
     }
 
+    //Giving player the ability to interact with doors
     void PlayerDoorInteraction() {
         if (inputManager.DoorInteracted()) {
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -206,6 +152,7 @@ public class PlayerInputClassM1 : NetworkBehaviour
         }
     }
 
+    //Handling Items over server
     [ServerRpc]
     void HandlePickUpServerRpc(NetworkObjectReference objRef, ServerRpcParams rpcParams = default) 
     {
@@ -216,7 +163,7 @@ public class PlayerInputClassM1 : NetworkBehaviour
         PickupObjectServerRpc(objRef, targetClient.PlayerObject.NetworkObjectId);
     }
 
-
+    // Picking up items over server
     [ServerRpc]
     void PickupObjectServerRpc(NetworkObjectReference objRef, ulong targetNetPlayerObjId)
     {
@@ -234,8 +181,6 @@ public class PlayerInputClassM1 : NetworkBehaviour
 
                 Transform cameraTransform = playerObj.transform.Find("MainCamera");
                 obj.transform.localPosition = new Vector3(0f, -0.5f, 1f);
-
-                // obj.transform.localPosition = Vector3.zero;
                 obj.transform.localRotation = Quaternion.identity;
 
                 PlaySoundClientRpc("pickup");
@@ -243,6 +188,7 @@ public class PlayerInputClassM1 : NetworkBehaviour
         }
     }
 
+    //Droping objects over server
     [ServerRpc]
     void DropObjectServerRpc(NetworkObjectReference objRef)
     {
@@ -257,6 +203,7 @@ public class PlayerInputClassM1 : NetworkBehaviour
         }
     }
 
+    //Logic for playing sounds over server
     [ServerRpc]
     void PlaySoundServerRpc(string soundType, ServerRpcParams rpcParams = default)
     {
@@ -271,6 +218,7 @@ public class PlayerInputClassM1 : NetworkBehaviour
         PlaySoundClientRpc(soundType, ownerOnly);
     }
 
+    //Client side list of sounds to play
     [ClientRpc]
     void PlaySoundClientRpc(string soundType, ClientRpcParams clientRpcParams = default)
     {
@@ -288,94 +236,10 @@ public class PlayerInputClassM1 : NetworkBehaviour
                 break;
         }
 
+        //Plays the sound for client
         if (clipToPlay != null && audioSource != null)
         {
             audioSource.PlayOneShot(clipToPlay);
         }
     }
-
-    // partial implementation where pick up involves more physics
-    // void PlayerScrapInteractions() {
-    //     if (inputManager.PlayerInteracted()) {
-    //         // if player has object in hand, drop it where it is
-    //         if (inHand != null) {
-
-    //             inHand.TryGetComponent<NetworkObject>(out var netObj);
-    //             DropObjectServerRpc(netObj);
-
-    //             inHand = null;
-    //         }
-    //         else {
-    //             // process what user is interacting with (scrap/door/others)
-    //             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-    //             if (Physics.Raycast(ray, out RaycastHit hit, 3)) {
-    //                 GameObject obj = hit.collider.gameObject;
-
-    //                 // if player lookcing at scrap and doesn't have item in hand
-    //                 if (obj.tag == "Scrap" && inHand == null) {
-    //                     // marks item inhand on client side
-    //                     inHand = obj;
-
-    //                     Debug.Log("ems: picking up scrap");
-
-    //                     // stores network reference to let server handle the rest
-    //                     inHand.TryGetComponent<NetworkObject>(out var netObj);
-
-    //                     InteractWithObjectServerRpc(netObj, hit.transform.position);
-
-
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
-
-    // [ServerRpc]
-    // private void UpdateAnchorProxyServerRpc(Vector3 anchorPosition, Quaternion anchorRotation)
-    // {
-    //     anchorProxyObject.position = anchorPosition;
-    //     anchorProxyObject.rotation = anchorRotation;
-    // }
-
-
-    // [ServerRpc]
-    // private void DropObjectServerRpc(NetworkObjectReference objRef)
-    // {
-    //     if (objRef.TryGet(out var obj))
-    //     {
-    //         SpringJoint joint = obj.GetComponent<SpringJoint>();
-    //         Rigidbody rb = obj.GetComponent<Rigidbody>();
-
-    //         rb.useGravity = true;
-    //         Destroy(joint);
-    //     }
-    // }
-
-    // [ServerRpc]
-    // private void InteractWithObjectServerRpc(NetworkObjectReference objRef, Vector3 hitPos) {
-    //     if (objRef.TryGet(out var obj))
-    //     {
-    //         Rigidbody itemRb = obj.GetComponent<Rigidbody>();
-    //         itemRb.useGravity = false;
-    //         itemRb.velocity = Vector3.zero;
-    //         anchorProxyObject.position = hitPos;
-
-    //         Rigidbody anchorRb = anchorProxyRb; 
-    //         itemRb.angularVelocity = Vector3.zero;
-
-    //         SpringJoint joint = obj.gameObject.AddComponent<SpringJoint>();
-    //         joint.connectedBody = anchorRb;
-
-    //         joint.spring = 100f; // pull force towards anchor
-    //         joint.damper = 50f; // wobble modifier
-
-    //         // spring stretch limits
-    //         joint.minDistance = 0.01f;
-    //         joint.maxDistance = 0.05f;
-    //     }
-    // }
-
-
-
 }

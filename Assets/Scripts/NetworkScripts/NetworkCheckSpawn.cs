@@ -2,6 +2,7 @@ using UnityEngine;
 using Unity.Netcode;
 using System;
 
+//Logic for spawning and despawning playable characters
 public class NetworkCheckSpawn : NetworkBehaviour
 {
 

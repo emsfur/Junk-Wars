@@ -10,8 +10,6 @@ public class RpcTest : NetworkBehaviour
              }
     }
 
-   //[Rpc(SendTo.ClientsAndHost)]
-   //[ServerRpc]
    [ClientRpc]
    void TestClientRpc(int value, ulong sourceNetworkObjectId)
    {
@@ -22,7 +20,6 @@ public class RpcTest : NetworkBehaviour
        }
    }
 
-  //[Rpc(SendTo.Server)]
   [ServerRpc]
    void TestServerRpc(int value, ulong sourceNetworkObjectId)
    {

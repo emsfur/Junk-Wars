@@ -4,19 +4,14 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+//Logic for scoring in the game
 public class ScoreChange : MonoBehaviour
 {
     // Start is called before the first frame update
-    //private Text thisText;
-    //private TMP_Text thisText;
     public TextMeshProUGUI thisText;
     public int score =0;
 
     void Update() {
-
-        //Debug.Log(thisText.)
-        
         thisText.text = score.ToString( "#,0" );
-        //thisText.text = score.ToString( "#,0" );
     }
 }

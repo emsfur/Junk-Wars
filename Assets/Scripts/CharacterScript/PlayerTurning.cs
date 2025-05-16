@@ -1,6 +1,6 @@
-
 using UnityEngine;
 
+//Logic for player turninig on movement
 public class PlayerTurning : MonoBehaviour
 {
     public float turningSpeed = 100f;
