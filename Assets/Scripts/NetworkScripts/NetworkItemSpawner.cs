@@ -44,7 +44,7 @@ public class NetworkItemSpawner : NetworkBehaviour
                 Vector3 spawnPos = spawnPoints[idx];
 
                 // locally instantiate item
-                GameObject itemSpawn = Instantiate(items[0], spawnPos, Quaternion.identity);
+                GameObject itemSpawn = Instantiate(items[Random.Range(0, items.Length)], spawnPos, Quaternion.identity);
                 itemSpawn.GetComponent<Rigidbody>().isKinematic = false;
 
                 // get the network obj component to spawn item over network
